@@ -1,40 +1,34 @@
-const Hello = ({name, age}) => { //it's component
-    //props is an object, remember that!
+import {useState} from "react";
 
-    // destructuring:
-    // 1.
-    // const name = props.name;
-    // const age = props.age;
-    // 2.
-    // const {age, name} = props
+const Display = ({counter}) => <div>{counter}</div>
+const Button = ({onSmash, text}) => <button onClick={onSmash}>{text}</button>
 
-    //ini adalah fungsi dalam fungsi, benar bukan?ya!
-    const bornYear = () => new Date().getFullYear() - age;
+const App = () => {
+    const [counter, setCounter] = useState(0)
+    console.log('rendering with counter value', counter)
 
-    return (
+    const increaseByOne = () => {
+        console.log('increasing, value before', counter)
+        setCounter(counter + 1)
+    }
+
+    const decreaseByOne = () => {
+        console.log('decreasing, value before', counter)
+        setCounter(counter - 1)
+    }
+
+    const setToZero = () => {
+        console.log('resetting to zero, value before', counter)
+        setCounter(0)
+    }
+
+    return(
         <div>
-            <p>Hello world from Hello(). and this value of props: {name} and {age}</p>
-            <p>So you probably born in {bornYear()}</p>
+            <Display counter={counter}/>
+            <Button onSmash={increaseByOne} text="plus"/>
+            <Button onSmash={setToZero} text="reset"/>
+            <Button onSmash={decreaseByOne} text="minus"/>
         </div>
     )
 }
-
-const App = () => { //it's component too
-    const now = new Date();
-    const name = `dhandi`
-    const age = 17
-    const person = [
-        {name: 'peter', age: 20},
-        {name: 'john', age: 21},
-    ]
-    return (
-        <div>
-            <p>Hello world, it is {now.toString()}</p>
-            <Hello name={name} age={age} />
-            {/*cant render object, but fine if just one data*/}
-            <p>{person[1].name}</p>
-        </div>
-    )
-}
-
-export default App
+export default App;
