@@ -1,33 +1,59 @@
 import {useState} from "react";
 
-const Display = ({counter}) => <div>{counter}</div>
-const Button = ({onSmash, text}) => <button onClick={onSmash}>{text}</button>
+const History = ({allClicks}) => {
+    if (allClicks.length === 0) {
+        return ( //conditional rendering
+            <div>
+                the app is used by pressing the buttons
+            </div>
+        )
+    }
+    return (
+        <div>
+            button press history: {allClicks.join(` `)}
+        </div>
+    )
+}
 
 const App = () => {
-    const [counter, setCounter] = useState(0)
-    console.log('rendering with counter value', counter)
 
-    const increaseByOne = () => {
-        console.log('increasing, value before', counter)
-        setCounter(counter + 1)
+    const [left, setLeft] = useState(0);
+    const [right, setRight] = useState(0);
+
+    const [allClicks, setAllClicks] = useState([])
+    const [total, setTotal] = useState(0)
+
+
+    const handleLeftClick = () => {
+        setAllClicks(allClicks.concat('L'))
+        const leftUpdate = left + 1
+        setLeft(leftUpdate)
+        setTotal(leftUpdate + right)
     }
 
-    const decreaseByOne = () => {
-        console.log('decreasing, value before', counter)
-        setCounter(counter - 1)
-    }
+    const handleRightClick = () => {
+        setAllClicks(allClicks.concat('R'))
+        const rightUpdate = right + 1
+        setRight(rightUpdate)
+        setTotal(rightUpdate + left)
 
-    const setToZero = () => {
-        console.log('resetting to zero, value before', counter)
-        setCounter(0)
+
     }
 
     return(
         <div>
-            <Display counter={counter}/>
-            <Button onSmash={increaseByOne} text="plus"/>
-            <Button onSmash={setToZero} text="reset"/>
-            <Button onSmash={decreaseByOne} text="minus"/>
+            {left}
+            <button onClick={handleLeftClick} className="btn btn-primary">
+                left
+            </button>
+            <button onClick={handleRightClick} className="btn btn-primary">
+                right
+            </button>
+            {right}
+            <div>
+                <History allClicks={allClicks} />
+            </div>
+            <p>{total}</p>
         </div>
     )
 }
