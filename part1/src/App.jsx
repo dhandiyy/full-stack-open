@@ -15,6 +15,10 @@ const History = ({allClicks}) => {
     )
 }
 
+const Button = ({handleClicks, text}) => <button onClick={handleClicks}>{text}</button>
+const Display = props => <div>{props.value}</div>
+
+
 const App = () => {
 
     const [left, setLeft] = useState(0);
@@ -22,6 +26,7 @@ const App = () => {
 
     const [allClicks, setAllClicks] = useState([])
     const [total, setTotal] = useState(0)
+    const [value, setValue] = useState(0)
 
 
     const handleLeftClick = () => {
@@ -36,24 +41,30 @@ const App = () => {
         const rightUpdate = right + 1
         setRight(rightUpdate)
         setTotal(rightUpdate + left)
-
-
     }
+
+    //Function return function
+    const setToValue = (value) => {
+        console.log(`value now is ${value}`)
+        setValue(value)
+    }
+
 
     return(
         <div>
             {left}
-            <button onClick={handleLeftClick} className="btn btn-primary">
-                left
-            </button>
-            <button onClick={handleRightClick} className="btn btn-primary">
-                right
-            </button>
+            <Button text="left" handleClicks={handleLeftClick}/>
+            <Button text="right" handleClicks={handleRightClick}/>
             {right}
             <div>
                 <History allClicks={allClicks} />
             </div>
             <p>{total}</p>
+            <Button text="Thousand" handleClicks={() => setToValue(1000)}/>
+            <Button text="Increment" handleClicks={() => setToValue(value + 1)}/>
+            <Button text="Reset" handleClicks={() => setToValue(0)}/>
+            <Display value = {value}/>
+
         </div>
     )
 }
