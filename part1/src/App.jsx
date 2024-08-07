@@ -31,15 +31,20 @@ const App = () => {
         setVotes(newVotes)
     }
 
-
-    console.log(`ini selected ${selected}`)
-
     return (
         <div>
-            <p>{anecdotes[selected]}</p>
-            <p>has {votes[selected]} votes</p>
-            <button onClick={handleVote}>vote</button>
-            <button onClick={handleSelect}>next anecdotes</button>
+            <div>
+                <h1>Anecdote of the day</h1>
+                <p>{anecdotes[selected]}</p>
+                <p>has {votes[selected]} votes</p>
+                <button onClick={handleVote}>vote</button>
+                <button onClick={handleSelect}>next anecdotes</button>
+            </div>
+
+            <div>
+                <h1>Anecdote with most votes</h1>
+                <p>{anecdotes[votes.indexOf(Math.max(...votes))]}</p>
+            </div>
 
         </div>
     )
