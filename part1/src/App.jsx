@@ -1,76 +1,46 @@
 import { useState } from 'react'
 
-const Button = ({eventHandler, text}) => <button onClick={eventHandler}>{text}</button>
-
-const StatisticLine = ({text, value}) => {
-    if(text === "positive") {
-        return (
-            <tr>
-                <td>{text}</td>
-                <td>{value}</td>
-                <td>%</td>
-            </tr>
-        )
-    }
-    return (
-        <tr>
-            <td>{text}</td>
-            <td>{value}</td>
-        </tr>
-    )
-}
-
-
-const Statistics = ({total, good, bad, neutral}) => {
-    if (total === 0) {
-        return (
-            <div>
-                <p>No feedback given</p>
-            </div>
-        )
-    }
-    return (
-        <div>
-            <StatisticLine text="good" value={good}/>
-            <StatisticLine text="neutral" value={neutral}/>
-            <StatisticLine text="bad" value={bad}/>
-            <StatisticLine text="all" value={bad+neutral+good}/>
-            <StatisticLine text="average" value={good-bad / 2}/>
-            <StatisticLine text="positive" value={(good / total) * 100}/>
-        </div>
-    )
-}
-
 const App = () => {
-    const [good, setGood] = useState(0);
-    const [neutral, setNeutral] = useState(0);
-    const [bad, setBad] = useState(0);
-    const total = bad+neutral+good;
+    const anecdotes = [
+        'If it hurts, do it more often.',
+        'Adding manpower to a late software project makes it later!',
+        'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+        'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+        'Premature optimization is the root of all evil.',
+        'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+        'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+        'The only way to go fast, is to go well.'
+    ]
 
-    const chooseGood = () => {
-        const newGood = good + 1;
-        setGood(newGood);
+
+    const [selected, setSelected] = useState(0)
+    const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+
+
+    const handleSelect = () => {
+        let newSelected;
+        do{
+            newSelected = Math.floor(Math.random()*anecdotes.length)
+        }while(newSelected === selected)
+        setSelected(newSelected)
     }
 
-    const chooseNeutral = () => {
-        const newNeutral = neutral + 1;
-        setNeutral(newNeutral);
+    const handleVote = () => {
+        const newVotes = [...votes]
+        newVotes[selected] += 1
+        setVotes(newVotes)
     }
 
-    const chooseBad = () => {
-        const newBad = bad + 1;
-        setBad(newBad);
-    }
 
+    console.log(`ini selected ${selected}`)
 
     return (
         <div>
-            <h1>give feedback</h1>
-            <Button text="good" eventHandler={chooseGood}/>
-            <Button text="neutral" eventHandler={chooseNeutral}/>
-            <Button text="bad" eventHandler={chooseBad}/>
-            <h1>statistics</h1>
-            <Statistics total={total} good={good} bad={bad} neutral={neutral}/>
+            <p>{anecdotes[selected]}</p>
+            <p>has {votes[selected]} votes</p>
+            <button onClick={handleVote}>vote</button>
+            <button onClick={handleSelect}>next anecdotes</button>
+
         </div>
     )
 }
