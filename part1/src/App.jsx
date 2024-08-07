@@ -2,6 +2,23 @@ import { useState } from 'react'
 
 const Button = ({eventHandler, text}) => <button onClick={eventHandler}>{text}</button>
 
+const Statistic = ({total, good, bad}) => {
+    if (total === 0){
+        return(
+            <div>
+                <p>No feedback given</p>
+            </div>
+        )
+    }
+    return (
+        <div>
+            <p>all {total}</p>
+            <p>average {good - bad / 2}</p>
+            <p>positive {(good / total) * 100}%</p>
+        </div>
+    )
+}
+
 const App = () => {
     const [good, setGood] = useState(0);
     const [neutral, setNeutral] = useState(0);
@@ -35,9 +52,7 @@ const App = () => {
             <p>good {good}</p>
             <p>neutral {neutral}</p>
             <p>bad {bad}</p>
-            <p>all {total}</p>
-            <p>average {good-bad/2}</p>
-            <p>positive {(good/total)*100}%</p>
+            <Statistic total={total} good={good} bad={bad}/>
         </div>
     )
 }
