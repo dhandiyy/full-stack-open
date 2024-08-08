@@ -25,6 +25,9 @@
     &quot;accountId&quot;: &quot;c86495f7-4eec-470f-ad91-49cde62f5ff3&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/part1/src/App.jsx" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -62,7 +65,7 @@
       <option name="presentableId" value="Default" />
       <updated>1723111223923</updated>
       <workItem from="1723111224954" duration="1307000" />
-      <workItem from="1723126304605" duration="2015000" />
+      <workItem from="1723126304605" duration="6102000" />
     </task>
     <servers />
   </component>
