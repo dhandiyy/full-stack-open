@@ -20,5 +20,5 @@ const notes = [
 ]
 
 createRoot(document.getElementById('root')).render(
-    <App notes={notes}/>
+    <App/>
 )
