@@ -1,10 +1,38 @@
 import Note from "./components/Note.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
-const App = (props) => {
-    const [notes, setNotes] = useState(props.notes);
+const App = () => {
+    const [notes, setNotes] = useState([]);
     const [newNote, setNewNote] = useState("a new notes...");
     const [showAll, setShowAll] = useState(false);
+
+    //Effect is tool to connect and synchronize application with external system
+    useEffect(() => {
+        axios
+            .get("http://localhost:3001/notes")
+            .then(respon => {
+                console.log("promise fulfilled")
+                setNotes(respon.data);
+            })
+    }, []);
+
+
+    //Penulisan lain dari effect
+    // useEffect(() => {
+    //     console.log('this from effect block')
+    //
+    //     const eventHandler = response => {
+    //         console.log('promise fulfilled')
+    //         setNotes(response.data)
+    //     }
+    //     const promise = axios.get('http://localhost:3001/notes')
+    //     promise.then(eventHandler)
+    //
+    // }, [])
+
+
+    console.log('render', notes.length, 'notes')
 
     const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
