@@ -15,7 +15,8 @@ const App = () => {
                 console.log("promise fulfilled")
                 setNotes(respon.data);
             })
-    }, []);
+    }, []); //[]-> initial value for how frequent the effect do
+
 
 
     //Penulisan lain dari effect
@@ -32,7 +33,6 @@ const App = () => {
     // }, [])
 
 
-    console.log('render', notes.length, 'notes')
 
     const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
