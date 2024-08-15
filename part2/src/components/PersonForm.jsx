@@ -1,7 +1,7 @@
 const PersonForm = ({addPerson, newPerson, setNewPerson, person}) => {
 	const handleInputChange = (event) => {
 		const {name, value} = event.target
-		setNewPerson({...newPerson, [name]:value, id: person.length + 1})
+		setNewPerson({...newPerson, [name]:value, id: (person.length + 1).toString()})
 	}
 	return (
 		<form onSubmit={addPerson}>
