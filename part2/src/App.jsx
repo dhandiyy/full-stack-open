@@ -1,6 +1,6 @@
 import Note from "./components/Note.jsx";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import noteService from "./services/note.js";
 
 const App = () => {
     const [notes, setNotes] = useState([]);
@@ -9,11 +9,10 @@ const App = () => {
 
     //Effect is tool to connect and synchronize application with external system
     useEffect(() => {
-        axios
-            .get("http://localhost:3001/notes")
-            .then(respon => {
-                console.log("promise fulfilled")
-                setNotes(respon.data);
+        noteService
+            .getAll()
+            .then(response => {
+                setNotes(response)
             })
     }, []); //[]-> initial value for how frequent the effect do
 
@@ -30,7 +29,6 @@ const App = () => {
     //
     // }, [])
 
-    const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
     //event.target -> object HTMLnya (DOM) dari komponen yang menggunakan event ini. ex: form and input
     const addNote = (event) => {
@@ -40,32 +38,37 @@ const App = () => {
             important: Math.random() < 0.5,
         }
 
-        axios
-            .post('http://localhost:3001/notes', noteObject)
+        noteService
+            .create(noteObject)
             .then(response => {
                 setNotes(notes.concat(response.data))
                 setNewNote("")
-                console.log(response)
             })
+
     }
 
     const handleChangeNote = (event) => {
         setNewNote(event.target.value)
-        console.log("ini adalah panjang notes", notes.length)
     }
 
     const toggleImportance = id => {
         console.log(`importance of ${id} need to be toggled`)
         const note = notes.find(n => n.id === id)
         const changedNote = {...note, important: !note.important}
-        axios
-            .put(`http://localhost:3001/notes/${id}`, changedNote)
+        noteService
+            .update(id, changedNote)
             .then(response => {
-                console.log(response.data)
-                setNotes(notes.map(n => n.id !== id ? n : response.data))
+                setNotes(notes.map(n => n.id !== id? n : response.id))
+            })
+            .catch(error => {
+                alert(
+                    `the note ${note.content} was already deleted from server`
+                )
+                setNotes(notes.filter(n => n.id !== id))
             })
 
     }
+    const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
     return (
         <div>
