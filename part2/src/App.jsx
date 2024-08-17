@@ -1,11 +1,29 @@
 import Note from "./components/Note.jsx";
 import {useEffect, useState} from "react";
 import noteService from "./services/note.js";
+import Notification from "./components/Notification.jsx";
+
+const Footer = () => {
+    const footerStyle = {
+        color: 'green',
+        fontStyle: 'italic',
+        fontSize: 14
+    }
+
+    return (
+        <div style={footerStyle}>
+            <br/>
+            <em>Note app, Department of Computer Science, University of Helsinki 2024</em>
+
+        </div>
+    )
+}
 
 const App = () => {
     const [notes, setNotes] = useState([]);
-    const [newNote, setNewNote] = useState("a new notes...");
-    const [showAll, setShowAll] = useState(false);
+    const [newNote, setNewNote] = useState("");
+    const [showAll, setShowAll] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     //Effect is tool to connect and synchronize application with external system
     useEffect(() => {
@@ -52,19 +70,22 @@ const App = () => {
     }
 
     const toggleImportance = id => {
-        console.log(`importance of ${id} need to be toggled`)
         const note = notes.find(n => n.id === id)
         const changedNote = {...note, important: !note.important}
+
         noteService
             .update(id, changedNote)
             .then(response => {
-                setNotes(notes.map(n => n.id !== id? n : response.id))
+                setNotes(notes.map(n => n.id !== id? n : response))
             })
             .catch(error => {
-                alert(
-                    `the note ${note.content} was already deleted from server`
+                setErrorMessage(
+                    `Note '${note.content}' was already removed from server`
                 )
-                setNotes(notes.filter(n => n.id !== id))
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 5000)
+                setNotes(notes.filter(n=> n.id !== id))
             })
 
     }
@@ -73,7 +94,10 @@ const App = () => {
     return (
         <div>
             <h1>Notes</h1>
-            <button onClick={() => setShowAll(!showAll)}>show {showAll? "important" : "all"}</button>
+            <Notification message={errorMessage}/>
+            <div>
+                <button onClick={() => setShowAll(!showAll)}>show {showAll ? "important" : "all"}</button>
+            </div>
             <ul>
                 {notesToShow.map(notes =>
                     <Note key={notes.id} notes={notes} toggleImportance={() => toggleImportance(notes.id)}/>
@@ -88,6 +112,7 @@ const App = () => {
                 />
                 <button type="submit">save</button>
             </form>
+            <Footer/>
         </div>
     )
 
