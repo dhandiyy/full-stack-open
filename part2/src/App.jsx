@@ -3,12 +3,15 @@ import PersonForm from "./components/PersonForm.jsx";
 import Filter from "./components/Filter.jsx";
 import Persons from "./components/Persons.jsx";
 import personService from "./services/persons.js"
+import Notification from "./services/Notification.jsx";
 
 const App = () => {
 
     const [person, setPerson] = useState([])
     const [newPerson, setNewPerson] = useState({name:"", number:""})
     const [searchValue, setSearchValue] = useState("");
+    const [message, setMessage] = useState(null);
+    const [status, setStatus] = useState(null);
 
     useEffect(() => {
         personService
@@ -35,13 +38,13 @@ const App = () => {
                 personService
                     .update(personToUpdate.id, updatePerson)
                     .then(returnedPerson => {
-                        console.log(returnedPerson)
                         setPerson(person.map(ppl => ppl.id !== personToUpdate.id? ppl : returnedPerson))
                         const resetNewPerson = {name:"", number:""}
                         setNewPerson(resetNewPerson)
                     })
                     .catch(error => {
-                        console.log(error.response)
+                        setMessage(`Information ${personToUpdate.name} has already been removed from server`)
+                        setStatus('error')
                     })
                 return;
             }
@@ -54,6 +57,13 @@ const App = () => {
                 setPerson(updatePerson)
                 const resetNewPerson = {name:"", number:""}
                 setNewPerson(resetNewPerson)
+                setMessage(
+                    `Adedd ${returnPerson.name}`
+                )
+                setStatus('success')
+                setTimeout(() => {
+                    setMessage(null)
+                }, 3000)
             })
 
 
@@ -80,6 +90,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={message} status={status}/>
             <Filter searchValue={searchValue} handleInputSearching={handleInputSearching}/>
             <h3>Add new</h3>
             <PersonForm setNewPerson={setNewPerson} addPerson={addPerson} newPerson={newPerson} person={person}/>
