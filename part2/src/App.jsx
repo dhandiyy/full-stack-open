@@ -1,118 +1,85 @@
-import Note from "./components/Note.jsx";
 import {useEffect, useState} from "react";
-import noteService from "./services/note.js";
-import Notification from "./components/Notification.jsx";
-
-const Footer = () => {
-    const footerStyle = {
-        color: 'green',
-        fontStyle: 'italic',
-        fontSize: 14
-    }
-
-    return (
-        <div style={footerStyle}>
-            <br/>
-            <em>Note app, Department of Computer Science, University of Helsinki 2024</em>
-
-        </div>
-    )
-}
+import axios from "axios";
 
 const App = () => {
-    const [notes, setNotes] = useState([]);
-    const [newNote, setNewNote] = useState("");
-    const [showAll, setShowAll] = useState(true);
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [searchValue, setSearchValue] = useState("");
+    const [countries, setCountries] = useState([]);
+    const [visibleCountries, setVisibleCountries] = useState({});
 
-    //Effect is tool to connect and synchronize application with external system
     useEffect(() => {
-        noteService
-            .getAll()
+        console.log(`Fetching data..`)
+        axios
+            .get('https://studies.cs.helsinki.fi/restcountries/api/all')
             .then(response => {
-                setNotes(response)
-            })
-    }, []); //[]-> initial value for how frequent the effect do
-
-    //Penulisan lain dari effect
-    // useEffect(() => {
-    //     console.log('this from effect block')
-    //
-    //     const eventHandler = response => {
-    //         console.log('promise fulfilled')
-    //         setNotes(response.data)
-    //     }
-    //     const promise = axios.get('http://localhost:3001/notes')
-    //     promise.then(eventHandler)
-    //
-    // }, [])
-
-
-    //event.target -> object HTMLnya (DOM) dari komponen yang menggunakan event ini. ex: form and input
-    const addNote = (event) => {
-        event.preventDefault();
-        const noteObject = {
-            content: newNote,
-            important: Math.random() < 0.5,
-        }
-
-        noteService
-            .create(noteObject)
-            .then(response => {
-                setNotes(notes.concat(response.data))
-                setNewNote("")
+                setCountries(response.data)
+                console.log(countries)
             })
 
+    }, []);
+
+    const filteredCountries = countries.filter(country =>
+        country.name.common.toLowerCase().includes(searchValue.toLowerCase())
+    )
+
+    const handleInputSearching = (event) => {
+        setSearchValue(event.target.value);
     }
 
-    const handleChangeNote = (event) => {
-        setNewNote(event.target.value)
+    const toggleCountryVisibility = (countryName) => {
+        setVisibleCountries(prev => ({
+            ...prev, [countryName]: !prev[countryName]
+        }))
     }
-
-    const toggleImportance = id => {
-        const note = notes.find(n => n.id === id)
-        const changedNote = {...note, important: !note.important}
-
-        noteService
-            .update(id, changedNote)
-            .then(response => {
-                setNotes(notes.map(n => n.id !== id? n : response))
-            })
-            .catch(error => {
-                setErrorMessage(
-                    `Note '${note.content}' was already removed from server`
-                )
-                setTimeout(() => {
-                    setErrorMessage(null)
-                }, 5000)
-                setNotes(notes.filter(n=> n.id !== id))
-            })
-
-    }
-    const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
     return (
         <div>
-            <h1>Notes</h1>
-            <Notification message={errorMessage}/>
-            <div>
-                <button onClick={() => setShowAll(!showAll)}>show {showAll ? "important" : "all"}</button>
-            </div>
-            <ul>
-                {notesToShow.map(notes =>
-                    <Note key={notes.id} notes={notes} toggleImportance={() => toggleImportance(notes.id)}/>
-                )}
-            </ul>
-            <form onSubmit={addNote}>
-                <input
-                    type="text"
-                    value={newNote}
-                    onChange={handleChangeNote}
-
-                />
-                <button type="submit">save</button>
-            </form>
-            <Footer/>
+            find countries <input onChange={handleInputSearching} value={searchValue} />
+            {filteredCountries.length > 10 ? (
+                <p>Too many matches, please specify your search further.</p>
+            ) : filteredCountries.length === 1 ? (
+                <div>
+                    <h2>{filteredCountries[0].name.common}</h2>
+                    <p><strong>Capital:</strong> {filteredCountries[0].capital}</p>
+                    <p><strong>Area:</strong> {filteredCountries[0].area} km²</p>
+                    <p><strong>Languages:</strong></p>
+                    <ul>
+                        {Object.values(filteredCountries[0].languages).map(language => (
+                            <li key={language}>{language}</li>
+                        ))
+                        }
+                    </ul>
+                    <img
+                        src={filteredCountries[0].flags.png}
+                        alt={`Flag of ${filteredCountries[0].name.common}`}
+                        width="150"
+                    />
+                </div>
+            ) : (
+                filteredCountries.map((country) => (
+                    <div key={country.name.common}>
+                        {country.name.common} <button onClick={() => toggleCountryVisibility(country.name.common)}>
+                        {visibleCountries[country.name.common]? "hide" : "show"}
+                    </button>
+                        {visibleCountries[country.name.common] && (
+                            <div>
+                                <p><strong>Capital:</strong> {country.capital}</p>
+                                <p><strong>Area:</strong> {country.area} km²</p>
+                                <p><strong>Languages:</strong></p>
+                                <ul>
+                                    {Object.values(country.languages).map(language => (
+                                        <li key={language}>{language}</li>
+                                    ))}
+                                </ul>
+                                <img
+                                    src={country.flags.png}
+                                    alt={`Flag of ${country.name.common}`}
+                                    width="100"
+                                />
+                            </div>
+                        )}
+                    </div>
+                ))
+            )}
         </div>
     )
 
