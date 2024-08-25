@@ -5,6 +5,9 @@ const App = () => {
     const [searchValue, setSearchValue] = useState("");
     const [countries, setCountries] = useState([]);
     const [visibleCountries, setVisibleCountries] = useState({});
+    const [weather, setWeather] = useState(null);
+
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
 
     useEffect(() => {
         console.log(`Fetching data..`)
@@ -16,6 +19,18 @@ const App = () => {
             })
 
     }, []);
+
+    const fetchWeather = (capital) => {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${apiKey}&units=metric`;
+        axios
+            .get(url)
+            .then(response => {
+                setWeather(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching weather data: ", error);
+            });
+    }
 
     const filteredCountries = countries.filter(country =>
         country.name.common.toLowerCase().includes(searchValue.toLowerCase())
