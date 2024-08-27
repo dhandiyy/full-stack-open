@@ -1,5 +1,5 @@
 ### Fetch all notes
-GET {{baseUrl}}/api/notes
+GET {{baseUrl}}/api/persons
 Accept: application/json
 
 ### <-you can use this to multiple req

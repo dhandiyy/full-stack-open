@@ -1,0 +1,8 @@
+### Create a new notes
+POST {{baseUrl}}/api/persons
+Content-Type: application/json
+
+{
+  "name": "Dan Abramov",
+  "number": "111111111"
+}
