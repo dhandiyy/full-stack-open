@@ -1,0 +1,5 @@
+### Fetch all notes
+GET {{baseUrl}}/api/notes
+Accept: application/json
+
+### <-you can use this to multiple req

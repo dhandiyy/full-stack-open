@@ -1,0 +1,3 @@
+### Fetch a notes by ID
+GET {{baseUrl}}/api/notes/1
+Accept: application/json
