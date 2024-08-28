@@ -3,6 +3,6 @@ POST {{baseUrl}}/api/persons
 Content-Type: application/json
 
 {
-  "name": "Dan Abramov",
+  "name": "Dan Abramo",
   "number": "111111111"
 }

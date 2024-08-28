@@ -1,7 +1,24 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json()) //json-parser
+const requestLogger = (request, response, next) => {
+	console.log('Method:', request.method)
+	console.log('Path:  ', request.path)
+	console.log('Body:  ', request.body)
+	console.log('---')
+	next()
+}
+const unknownEndpoint = (request, response) => {
+	response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(express.urlencoded({ extended: true }))
+morgan.token('body', (request) => JSON.stringify(request.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+app.use(requestLogger)
 
 let persons = [
 	{
@@ -73,7 +90,7 @@ app.post('/api/persons', (request, response) => {
 
 	if (!body.name || !body.number) {
 		return response.status(400).json({
-			error: 'Content missing'
+			error: 'Name and number are missing'
 		})
 	}else if(persons.find(person => person.name === body.name)) {
 		return response.json({
@@ -91,6 +108,8 @@ app.post('/api/persons', (request, response) => {
 
 	response.json(person)
 })
+
+app.use(unknownEndpoint)
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`)
