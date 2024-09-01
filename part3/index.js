@@ -1,7 +1,11 @@
 const express = require('express')
+const cors = require('cors') //Cross-origin resource sharing
 const app = express()
 
 app.use(express.json()) //json-parser
+app.use(cors())
+app.use(express.static('dist')) //FILE FRONTEND
+
 
 let notes = [
 	{
@@ -20,8 +24,6 @@ let notes = [
 		important: true
 	}
 ]
-
-const port = 3001
 
 app.get('/', (request, response) => {
 	response.send('<h1>Hello World!</h1>')
@@ -56,7 +58,6 @@ const generatedId = () => {
 }
 
 app.post('/api/notes', (request, response) => {
-
 	const body = request.body
 
 	if (!body.content) {
@@ -75,6 +76,8 @@ app.post('/api/notes', (request, response) => {
 
 	response.json(note)
 })
+
+const port = process.env.port || 3001
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`)
