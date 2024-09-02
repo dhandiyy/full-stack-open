@@ -5,12 +5,17 @@ if (process.argv.length<3) {
 	process.exit(1)
 }
 
-const password = process.argv[2]
-const url =
-	`mongodb+srv://dhandiyudhit:${password}@cluster0.9gyxr.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
+const url =process.env.MONGODB_URI
 
 mongoose.set('strictQuery', false)
+
 mongoose.connect(url)
+	.then(result => {
+		console.log('connected to MongdoDb')
+	})
+	.catch(error => {
+		console.log('error connecting to MongoDb: ', error.message)
+	})
 
 const noteSchema = new mongoose.Schema({
 	content: String,
@@ -23,16 +28,20 @@ const note = new Note({
 	important: false
 })
 
+//SAVE NEW NOTE
 // note.save().then(result => {
 // 	console.log('note saved!')
 // 	console.log(note)
 // 	mongoose.connection.close()
 // })
 
-Note.find({important: true})
-.then(result => {
-	result.forEach(note => {
-		console.log(note)
-	})
-	mongoose.connection.close()
-})
+//GET NOTES
+// Note.find({important: true})
+// .then(result => {
+// 	result.forEach(note => {
+// 		console.log(note)
+// 	})
+// 	mongoose.connection.close()
+// })
+
+module.exports = mongoose.model('Note', noteSchema)
