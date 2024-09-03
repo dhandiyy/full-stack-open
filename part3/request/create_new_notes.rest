@@ -3,6 +3,6 @@ POST {{baseUrl}}/api/notes
 Content-Type: application/json
 
 {
-  "content": "JavaScript is easy too",
+  "content": "LOL",
   "important": true
 }
