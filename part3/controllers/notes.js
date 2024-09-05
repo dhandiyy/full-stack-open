@@ -1,3 +1,5 @@
+//A router object is an isolated instance of middleware and routes.
+
 const express = require('express');
 const notesRouter = express.Router()
 const Note = require('../models/note');

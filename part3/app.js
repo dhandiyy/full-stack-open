@@ -1,4 +1,5 @@
-//BACKEND-MODULE (EXPRESS)
+//BACKEND-MODULE (EXPRESS) and CONNECTION TO DATABASE
+
 const config = require('./utils/config')
 const express = require('express');
 const cors = require('cors'); // Cross-origin resource sharing
