@@ -19,6 +19,6 @@ describe('reverse', () => {
 	test('of react', () => {
 		const result = reverse('react')
 
-		assert.strictEqual(result, 'tcaer1')
+		assert.strictEqual(result, 'tcaer')
 	})
 })

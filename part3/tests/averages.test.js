@@ -9,7 +9,7 @@ describe('averages', () => {
 	})
 
 	test('of many is calculated right', () => {
-		assert.strictEqual(average([1, 2, 3, 4, 5, 6]), 3.51)
+		assert.strictEqual(average([1, 2, 3, 4, 5, 6]), 3.5)
 	})
 
 	test('of empty array is zero', () => {
