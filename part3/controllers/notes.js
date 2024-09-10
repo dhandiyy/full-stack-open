@@ -11,7 +11,7 @@ notesRouter.get('/', async (request, response) => {
 	response.json(notes)
 })
 
-notesRouter.get('/:id', async (request, response, next) => {
+notesRouter.get('/:id', async (request, response) => {
 
 	//USING ASYNC/AWAIT
 	// try{
