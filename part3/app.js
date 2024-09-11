@@ -1,15 +1,15 @@
 //BACKEND-MODULE (EXPRESS) and CONNECTION TO DATABASE
 
-const config = require('./utils/config')
 const express = require('express');
 const cors = require('cors'); // Cross-origin resource sharing
 const app = express();
+require('express-async-errors')
 const notesRouter = require('./controllers/notes')
+const usersRouter = require('./controllers/users')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose');
 require('dotenv').config()
-require('express-async-errors')
 
 mongoose.set('strictQuery', false)
 
@@ -28,7 +28,10 @@ app.use(express.static('dist'));
 app.use(cors());
 app.use(express.json()); // JSON body parser
 app.use(middleware.requestLogger);
+
+app.use('/api/users', usersRouter)
 app.use('/api/notes', notesRouter);
+
 app.use(middleware.unknownEndpoint); // Unknown endpoint handler
 app.use(middleware.errorHandler); // Error handler
 

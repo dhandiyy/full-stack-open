@@ -35,7 +35,6 @@ describe('when there is initially some notes saved', () => {
 	})
 
 	describe('viewing a specific note', () => {
-
 		test('succeeds with a valid id', async () => {
 			const notesAtStart = await helper.notesInDb()
 
@@ -58,11 +57,11 @@ describe('when there is initially some notes saved', () => {
 		})
 
 		test('fails with statuscode 400 id is invalid', async () => {
-			const invalidId = '66dff38f5b07ab86722d3301'
+			const invalidId = '66e14816c96ac299f0e51ab8'
 
 			await api
 				.get(`/api/notes/${invalidId}`)
-				.expect(400)
+				.expect(404)
 		})
 	})
 
@@ -119,6 +118,7 @@ describe('when there is initially some notes saved', () => {
 			assert(!contents.includes(noteToDelete.content))
 		})
 	})
+
 })
 
 after(async () => {

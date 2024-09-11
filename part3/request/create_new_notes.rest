@@ -1,8 +1,0 @@
-### Create a new notes
-POST {{baseUrl}}/api/notes
-Content-Type: application/json
-
-{
-  "content": "LOL",
-  "important": true
-}

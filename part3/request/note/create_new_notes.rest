@@ -1,0 +1,9 @@
+### Create a new notes
+POST {{baseUrl}}/api/notes
+Content-Type: application/json
+
+{
+  "content": "This second notes from this user",
+  "important": true,
+  "userId": "66e1a707933265f3e04912ea"
+}

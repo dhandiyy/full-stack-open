@@ -4,6 +4,7 @@ const express = require('express');
 const notesRouter = express.Router()
 const Note = require('../models/note');
 const logger = require('../utils/logger')
+const User = require('../models/user')
 
 
 notesRouter.get('/', async (request, response) => {
@@ -47,6 +48,7 @@ notesRouter.get('/:id', async (request, response) => {
 
 notesRouter.post('/', async (request, response, next) => {
 	const body = request.body
+	const user = await User.findById(body.userId)
 
 	// if(!body.content) {
 	// 	return response.status(400).json({ error: 'Content missing' });
@@ -54,15 +56,15 @@ notesRouter.post('/', async (request, response, next) => {
 
 	const note = new Note({
 		content: body.content,
-		important: body.important || false
+		important: body.important || false,
+		user: user.id
 	})
 
-	try {
-		const savedNote = await note.save()
-		response.status(201).json(savedNote)
-	} catch(exception) {
-		next(exception)
-	}
+	const savedNote = await note.save()
+	user.notes = user.notes.concat(savedNote.id)
+	await user.save()
+
+	response.status(201).json(savedNote)
 })
 
 notesRouter.put('/:id', (request, response, next) => {
