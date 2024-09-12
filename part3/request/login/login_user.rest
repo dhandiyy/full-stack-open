@@ -1,0 +1,8 @@
+### Create a new User
+POST {{baseUrl}}/api/login
+Content-Type: application/json
+
+{
+  "username": "dhandi11",
+  "password": "salainen"
+}
