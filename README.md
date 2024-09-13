@@ -19,15 +19,14 @@ The repository is structured according to the different sections of the course:
 1. **Part 0: Fundamentals of Web Apps**
 2. **Part 1: Introduction to React**
 3. **Part 2: Communicating with Server**
-4. **Part 3: Programming a Server with Node.js and Express**
-5. **Part 4: Testing Express Servers, User Administration**
-6. **Part 5: Testing React Apps**
-7. **Part 6: State Management with Redux**
-8. **Part 7: React Router, Custom Hooks, and more**
-9. **Part 8: GraphQL**
-10. **Part 9: TypeScript**
-11. **Part 10: Deployment**
-12. **Part 11: CI/CD**
+4. **Part 3 (include part 4): Programming a Server with Node.js, Express, Testing Express Servers and User Administration**
+5. **Part 5: Testing React Apps**
+6. **Part 6: State Management with Redux**
+7. **Part 7: React Router, Custom Hooks, and more**
+8. **Part 8: GraphQL**
+9. **Part 9: TypeScript**
+10. **Part 10: Deployment**
+11. **Part 11: CI/CD**
 
 Each folder in this repository corresponds to a different part of the course, and the code within each folder represents the exercises completed for that section.
 
