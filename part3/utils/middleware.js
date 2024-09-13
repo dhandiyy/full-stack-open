@@ -1,4 +1,5 @@
 const logger = require('./logger');
+const jwt = require('jsonwebtoken')
 
 // Logger Middleware untuk request
 const requestLogger = (request, response, next) => {
@@ -32,8 +33,25 @@ const errorHandler = (error, request, response, next) => {
 	next(error); // Pass to default error handler if not handled here
 };
 
+const tokenExtractor = (request, response, next) => {
+	const authorization = request.get('authorization')
+	console.log('The authorization object: ', authorization)
+	if (authorization && authorization.startsWith('Bearer ')) {
+		const token = authorization.replace('Bearer ', '')
+		try {
+			request.token = jwt.verify(token, process.env.SECRET)
+		} catch (error) {
+			request.token = null
+		}
+	} else {
+		request.token = null
+	}
+	next()
+}
+
 module.exports = {
 	requestLogger,
 	unknownEndpoint,
 	errorHandler,
+	tokenExtractor
 };
