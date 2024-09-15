@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Note = ({notes, toggleImportance}) =>{
 	const label = notes.important ? 'make not important' : 'make important'
 	return (
@@ -7,6 +9,11 @@ const Note = ({notes, toggleImportance}) =>{
 		</li>
 
 	)
+}
+
+Note.propTyepes = {
+	notes: PropTypes.object.isRequired,
+	toggleImportance: PropTypes.func.isRequired
 }
 
 export default Note

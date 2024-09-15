@@ -1,5 +1,5 @@
 import Note from "./components/Note.jsx";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import noteService from "./services/note.js";
 import Notification from "./components/Notification.jsx";
 import loginService from "./services/login.js"
@@ -10,12 +10,11 @@ import NoteForm from "./components/NoteForm.jsx";
 
 const App = () => {
     const [notes, setNotes] = useState([]);
-    const [newNote, setNewNote] = useState("");
     const [showAll, setShowAll] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
+
+    const noteFormRef = useRef()
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedNoteAppUser");
@@ -41,26 +40,15 @@ const App = () => {
     }, []);
 
     //event.target -> object HTMLnya (DOM) dari komponen yang menggunakan event ini. ex: form and input
-    const addNote = async (event) => {
-        event.preventDefault();
-        const noteObject = {
-            content: newNote,
-            important: Math.random() < 0.5
-        }
-
+    const addNote = async (noteObject) => {
+        noteFormRef.current.toggleVisibility()
         try {
             const createdNote = await noteService.create(noteObject);
             setNotes(notes.concat(createdNote));
-            setNewNote("");
         } catch (error) {
             console.error("Error creating note: ", error)
             setErrorMessage("Failed to create note. Please try again.")
         }
-
-    }
-
-    const handleChangeNote = (event) => {
-        setNewNote(event.target.value)
     }
 
     const toggleImportance = async (id) => {
@@ -81,21 +69,15 @@ const App = () => {
 
     const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
-    const handleLogin = async (event) => {
-        event.preventDefault()
-
+    const handleLogin = async (userObject) => {
         try {
-            const user = await loginService.login({
-                username, password
-            })
+            const user = await loginService.login(userObject)
             setUser(user)
 
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
             )
             noteService.setToken(user.token)
-            setUsername('')
-            setPassword('')
         } catch (exception) {
             setErrorMessage('Wrong credentials')
             setTimeout(() => {
@@ -118,23 +100,16 @@ const App = () => {
             {user === null && (
                 <Togglable buttonLabel='login'>
                     <LoginForm
-                        username={username}
-                        password={password}
-                        setUsername={setUsername}
-                        setPassword={setPassword}
-                        handleLogin={handleLogin}
+                        login={handleLogin}
                     />
                 </Togglable>
 
             )}
             {user !== null && (
-                <Togglable buttonLabel='new note'>
+                <Togglable buttonLabel='new note' ref={noteFormRef}>
                     <NoteForm
-                        addNote={addNote}
-                        newNote={newNote}
-                        handleChangeNote={handleChangeNote}
+                        createNote={addNote}
                     />
-
                 </Togglable>
 
             )}
