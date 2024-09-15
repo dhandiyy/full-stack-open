@@ -16,53 +16,46 @@ const App = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
-    const [loginVisible, setLoginVisible] = useState(false)
-
-    //Effect is tool to connect and synchronize application with external system
-    useEffect(() => {
-        noteService
-            .getAll()
-            .then(response => {
-                setNotes(response)
-            })
-    }, []); //[]-> initial value for how frequent the effect do
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser')
-        if(loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON)
-            setUser(user)
-            noteService.setToken(user.token)
+        const loggedUserJSON = window.localStorage.getItem("loggedNoteAppUser");
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON);
+            setUser(user);
+            noteService.setToken(user.token);
         }
-    }, [])
+    }, []);
 
-    //Penulisan lain dari effect
-    // useEffect(() => {
-    //     console.log('this from effect block')
-    //
-    //     const eventHandler = response => {
-    //         console.log('promise fulfilled')
-    //         setNotes(response.data)
-    //     }
-    //     const promise = axios.get('http://localhost:3001/notes')
-    //     promise.then(eventHandler)
-    //
-    // }, [])
+    useEffect(() => {
+        const fetchNotes = async () => {
+            try {
+                const fetchedNotes = await noteService.getAll();
+                console.log("Fetched notes:", fetchedNotes);
+                setNotes(fetchedNotes);
+            } catch (error) {
+                console.error("Error fetching notes:", error);
+                setErrorMessage("Failed to fetch notes. Please try again later.");
+            }
+        };
+        fetchNotes();
+    }, []);
 
     //event.target -> object HTMLnya (DOM) dari komponen yang menggunakan event ini. ex: form and input
-    const addNote = (event) => {
+    const addNote = async (event) => {
         event.preventDefault();
         const noteObject = {
             content: newNote,
-            important: Math.random() < 0.5,
+            important: Math.random() < 0.5
         }
 
-        noteService
-            .create(noteObject)
-            .then(response => {
-                setNotes(notes.concat(response.data))
-                setNewNote("")
-            })
+        try {
+            const createdNote = await noteService.create(noteObject);
+            setNotes(notes.concat(createdNote));
+            setNewNote("");
+        } catch (error) {
+            console.error("Error creating note: ", error)
+            setErrorMessage("Failed to create note. Please try again.")
+        }
 
     }
 
@@ -70,28 +63,22 @@ const App = () => {
         setNewNote(event.target.value)
     }
 
-    const toggleImportance = id => {
-        const note = notes.find(n => n.id === id)
-        const changedNote = {...note, important: !note.important}
-        console.log(note)
+    const toggleImportance = async (id) => {
+        const note = notes.find((n) => n.id === id);
+        const changedNote = { ...note, important: !note.important };
 
-        noteService
-            .update(id, changedNote)
-            .then(response => {
-                setNotes(notes.map(n => n.id !== id? n : response))
-            })
-            .catch(error => {
-                setErrorMessage(
-                    `Note '${note.content}' was already removed from server`
-                )
-                setTimeout(() => {
-                    setErrorMessage(null)
-                }, 5000)
-                setNotes(notes.filter(n=> n.id !== id))
-                console.log(error)
-            })
+        try {
+            const updatedNote = await noteService.update(id, changedNote);
+            setNotes(notes.map((n) => (n.id !== id ? n : updatedNote)));
+        } catch (error) {
+            setErrorMessage(`Note '${note.content}' was already removed from server`);
+            setTimeout(() => {
+                setErrorMessage(null);
+            }, 5000);
+            setNotes(notes.filter((n) => n.id !== id));
+        }
+    };
 
-    }
     const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
     const handleLogin = async (event) => {
@@ -106,8 +93,6 @@ const App = () => {
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
             )
-            console.log(window.localStorage)
-
             noteService.setToken(user.token)
             setUsername('')
             setPassword('')
@@ -158,8 +143,8 @@ const App = () => {
                 <button onClick={() => setShowAll(!showAll)}>show {showAll ? "important" : "all"}</button>
             </div>
             <ul>
-                {notesToShow.map(notes =>
-                    <Note key={notes.id} notes={notes} toggleImportance={() => toggleImportance(notes.id)}/>
+                {notesToShow.map((notes, i) =>
+                    <Note key={i} notes={notes} toggleImportance={() => toggleImportance(notes.id)}/>
                 )}
             </ul>
             {user !== null && (
