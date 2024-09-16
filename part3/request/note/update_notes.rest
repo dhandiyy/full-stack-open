@@ -1,0 +1,8 @@
+PUT{{baseUrl}}/api/notes/66e6d843e8c11584b9c6306d
+Content-Type: application/json
+
+{
+  "content": "test2",
+  "important": false
+
+}
