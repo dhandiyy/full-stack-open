@@ -1,10 +1,10 @@
 ### Create a new notes
 POST {{baseUrl}}/api/notes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRoYW5kaTExIiwiaWQiOiI2NmUzMDIzMDkwYmM0NzVjY2QwOTU1MzYiLCJpYXQiOjE3MjYzNDI3NjcsImV4cCI6MTcyNjM0NjM2N30.96ecefsh9uc4eW4tXfUDwwT5OeSWlOsFscPBxzMK7eM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRoYW5kaTExIiwiaWQiOiI2NmUzMDIzMDkwYmM0NzVjY2QwOTU1MzYiLCJpYXQiOjE3MzAxNzkwMDMsImV4cCI6MTczMDE4MjYwM30.joRbjfimeAdyiVwBMoeCMzhTJxPCNsskbkgJv9ffVMs
 
 {
-  "content": "This note from dhandi1 and using token from middleware1test",
+  "content": "New note in october",
   "important": true
 
 }

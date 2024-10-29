@@ -10,14 +10,14 @@ const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose');
-require('dotenv').config()
+const config = require('./utils/config')
+
 
 mongoose.set('strictQuery', false)
 
-const url = process.env.MONGODB_URI
-logger.info('connecting to', url)
+logger.info('connecting to', config.MONGODB_URI)
 
-mongoose.connect(url)
+mongoose.connect(config.MONGODB_URI)
 	.then(result => {
 		logger.info('connected to MongdoDb')
 	})
@@ -25,8 +25,8 @@ mongoose.connect(url)
 		logger.error('error connecting to MongoDb: ', error.message)
 	})
 
-app.use(express.static('dist'));
 app.use(cors());
+app.use(express.static('dist'));
 app.use(express.json()); // JSON body parser
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor)

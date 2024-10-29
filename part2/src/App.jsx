@@ -59,10 +59,9 @@ const App = () => {
         noteService
             .create(noteObject)
             .then(response => {
-                setNotes(notes.concat(response.data))
+                setNotes(notes.concat(response))
                 setNewNote("")
             })
-
     }
 
     const handleChangeNote = (event) => {

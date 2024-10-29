@@ -1,7 +1,6 @@
 //A router object is an isolated instance of middleware and routes.
 
-const express = require('express');
-const notesRouter = express.Router()
+const notesRouter = require('express').Router()
 const Note = require('../models/note');
 const User = require('../models/user')
 
@@ -77,7 +76,7 @@ notesRouter.put('/:id', (request, response, next) => {
 	Note.findByIdAndUpdate(
 		request.params.id,
 		{ content, important },
-		{new: true, runValidators: true, context: 'query'}
+		{new: true, runValidators: true, context: 'query'} //new:true -> for make a new modified document
 	)
 		.then(updatedNote => {
 			response.json(updatedNote)

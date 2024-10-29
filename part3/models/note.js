@@ -13,6 +13,7 @@ const noteSchema = new mongoose.Schema({
 	}
 })
 
+//to edit the property of note model/schema
 noteSchema.set('toJSON', {
 	transform: (document, returnedObject) => {
 		returnedObject.id = returnedObject._id.toString()
@@ -21,4 +22,5 @@ noteSchema.set('toJSON', {
 	}
 })
 
+//different exports module for just export the model not others like url and mongoose
 module.exports = mongoose.model('Note', noteSchema)
