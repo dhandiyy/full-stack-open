@@ -97,6 +97,8 @@ const App = () => {
         <div>
             <h1>Notes</h1>
             <Notification message={errorMessage}/>
+
+            {/*if first statement false/falsy so the second statement not exequte*/}
             {user === null && (
                 <Togglable buttonLabel='login'>
                     <LoginForm

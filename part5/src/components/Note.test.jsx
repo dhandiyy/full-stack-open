@@ -11,7 +11,7 @@ test('renders component', () => {
 	//CARA2
 	const {container} = render(<Note notes={note}/> )
 	const div = container.querySelector('.note')
-	screen.debug(div)
+	screen.debug(div) //to print in terminal
 	expect(div).toHaveTextContent('Component testing is done with react-testing-library')
 
 
@@ -27,7 +27,7 @@ test('clicking the button calls event handler once', async () => {
 		important: true
 	}
 
-	const mockHandler = vi.fn()
+	const mockHandler = vi.fn() //mock event handler
 	render(<Note notes={note} toggleImportance={mockHandler}/>)
 
 	const user = userEvent.setup()

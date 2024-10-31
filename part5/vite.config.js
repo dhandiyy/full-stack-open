@@ -9,5 +9,8 @@ export default defineConfig({
     //describe, test and expect into the all tests file
     globals: true,
     setupFiles: './testSetup.js',
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+    },
   }
 })
