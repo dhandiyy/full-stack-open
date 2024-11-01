@@ -1,3 +1,3 @@
 ### Delete a note by ID
-DELETE {{baseUrl}}/api/notes/3
+DELETE {{baseUrl}}/api/notes/672483e260beee330ea7a6b0
 #Authorization: {{authToken}}
