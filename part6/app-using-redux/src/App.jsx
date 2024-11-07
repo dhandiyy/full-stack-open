@@ -1,8 +1,6 @@
-import {createStore} from "redux"
-import noteReducer, {createNote, toggleImportanceOf} from "./reducers/noteReducer.js";
-import { useSelector, useDispatch } from 'react-redux'
-import NewNote from "./component/NewNote.jsx";
-import Notes from "./component/Notes.jsx";
+import NewNote from "./components/NewNote.jsx";
+import Notes from "./components/Notes.jsx";
+import VisibilityFilter from "./components/VisibilityFilter.jsx";
 
 
 // const CounterReducer = (state = 0, action) => { //this is root reducer function
@@ -29,11 +27,11 @@ import Notes from "./component/Notes.jsx";
 //note: when the state changes, react not automatically render
 
 
-
 const App = () => {
 	return (
 		<div>
 			<NewNote/>
+			<VisibilityFilter/>
 			<Notes/>
 		</div>
 	)
