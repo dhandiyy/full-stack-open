@@ -1,6 +1,10 @@
 import NewNote from "./components/NewNote.jsx";
 import Notes from "./components/Notes.jsx";
 import VisibilityFilter from "./components/VisibilityFilter.jsx";
+import {useDispatch} from "react-redux";
+import {useEffect} from "react";
+import noteService from "./services/notes.js"
+import {setNotes} from "./reducers/noteReducer.js";
 
 
 // const CounterReducer = (state = 0, action) => { //this is root reducer function
@@ -28,6 +32,15 @@ import VisibilityFilter from "./components/VisibilityFilter.jsx";
 
 
 const App = () => {
+	const dispatch = useDispatch()
+
+	//using data from database
+	useEffect(() => {
+		noteService.getAll().then(note => {
+			dispatch(setNotes(note))
+		})
+
+	}, []);
 	return (
 		<div>
 			<NewNote/>
