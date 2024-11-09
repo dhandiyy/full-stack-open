@@ -43,6 +43,7 @@ const App = () => {
 	}, []);
 	return (
 		<div>
+			<h2>Note App</h2>
 			<NewNote/>
 			<VisibilityFilter/>
 			<Notes/>
