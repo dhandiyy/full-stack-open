@@ -1,39 +1,15 @@
-import {useReducer} from "react";
-
-const counterReducer = (state, action) => {
-	switch (action.type){
-		case "INC":
-			return state + 1
-		case "DEC":
-			return state -1
-		case "ZERO":
-			return 0
-		default:
-			return state
-
-	}
-}
-
-const Display = ({counter}) => {
-	return <div>{counter}</div>
-}
-
-const Button = ({dispatch, type, label}) => {
-	return(
-		<button onClick={() => dispatch({type})}>{label}</button>
-	)
-}
+import Display from "./components/Display.jsx";
+import Button from "./components/Button.jsx";
 
 const App = () => {
-	const [counter, counterDispatch] = useReducer(counterReducer, 0)
 
 	return (
 		<div>
-			<Display counter={counter}/>
+			<Display/>
 			<div>
-				<Button type="INC" label="+" dispatch={counterDispatch}/>
-				<Button type="DEC" label="-" dispatch={counterDispatch}/>
-				<Button type="ZERO" label="0" dispatch={counterDispatch}/>
+				<Button type="INC" label="+"/>
+				<Button type="DEC" label="-"/>
+				<Button type="ZERO" label="0"/>
 			</div>
 		</div>
 	)
