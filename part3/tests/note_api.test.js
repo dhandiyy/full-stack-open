@@ -22,7 +22,7 @@ describe('when there is initially some notes saved', () => {
 	test('all notes are returned', async () => {
 		const response = await api.get('/api/notes')
 
-		expect(response.body.length).toHaveLength(helper.initialNotes.length)
+		expect(response.body).toHaveLength(helper.initialNotes.length)
 	})
 
 	test('a specific note is within the returned notes', async () => {
@@ -110,7 +110,7 @@ describe('when there is initially some notes saved', () => {
 
 			const notesAtEnd = await helper.notesInDb()
 
-			expect(notesAtEnd.length).toHaveLength(helper.initialNotes.length - 1)
+			expect(notesAtEnd).toHaveLength(helper.initialNotes.length - 1)
 
 			const contents = notesAtEnd.map(r => r.content)
 			expect(contents).not.toContain(noteToDelete.content)

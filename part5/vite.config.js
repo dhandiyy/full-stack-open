@@ -14,7 +14,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: 'jsdom',
-    //describe, test and expect into the all tests file
+    //using globals:true to make describe, test and expect into the all tests file
     globals: true,
     setupFiles: './testSetup.js',
     coverage: {
