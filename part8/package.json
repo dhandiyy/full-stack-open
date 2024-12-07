@@ -1,0 +1,19 @@
+{
+  "name": "part8",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "dhandi",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@apollo/server": "^4.11.2",
+    "graphql": "^16.9.0",
+    "graphql-tag": "^2.12.6",
+    "nodemon": "^3.1.7",
+    "uuid": "^11.0.3"
+  }
+}
