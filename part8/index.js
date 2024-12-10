@@ -191,7 +191,6 @@ const resolvers = {
 				username: user.username,
 				id: user._id,
 			}
-			console.log("ini userForToken:", userForToken)
 
 			return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
 		},
