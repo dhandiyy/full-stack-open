@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {useMutation} from "@apollo/client";
 import {ALL_PERSONS, CREATE_PERSON} from "../queries.js";
+import {updateCache} from "../App.jsx";
 
 const PersonForm = ({setErrorMessage}) => {
 	const [name, setName] = useState("")
@@ -8,18 +9,21 @@ const PersonForm = ({setErrorMessage}) => {
 	const [street, setStreet] = useState("")
 	const [city, setCity] = useState("")
 
-	const [createPerson, createPersonResult] = useMutation(CREATE_PERSON, {
-		refetchQueries: [{query: ALL_PERSONS}],
+	const [ createPerson ] = useMutation(CREATE_PERSON, {
+		// refetchQueries: [  {query: ALL_PERSONS } ], //program hit query dua kali, better using update callback
 		onError: (error) => {
-			const message = error.graphQLErrors.map(e => e.message).join("\n")
-			setErrorMessage(message)
-		}
-	});
+			const messages = error.graphQLErrors.map(e => e.message).join('\n')
+			setErrorMessage(messages)
+		},
+		update: (cache, response) => {
+			updateCache(cache, { query: ALL_PERSONS }, response.data.addPerson)
+		},
+	})
 
 	const submit = (event) => {
 		event.preventDefault();
 
-		createPerson({variables: {name, phone, street, city}});
+		createPerson({variables: {name, street, city, phone: phone.length > 0 ? phone:undefined }});
 
 		setName("");
 		setPhone("");
