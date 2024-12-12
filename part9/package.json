@@ -1,0 +1,26 @@
+{
+  "name": "part9",
+  "version": "1.0.0",
+  "description": "App using TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "calculate": "ts-node calculator.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.13",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

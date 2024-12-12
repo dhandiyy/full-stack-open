@@ -21,7 +21,7 @@ const typeDefs = gql`
         name: String!
         phone: String
         address: Address!
-        firendOf: [User!]!
+        friendOf: [User!]!
         id: ID!
     }
 
