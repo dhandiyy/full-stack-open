@@ -2,23 +2,31 @@
   "name": "part9",
   "version": "1.0.0",
   "description": "App using TypeScript",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "ts-node": "ts-node",
-    "calculate": "ts-node calculator.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node-dev src/index.ts",
+    "calculate": "ts-node src/calculator.ts",
+    "start": "ts-node src/index.ts",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@stylistic/eslint-plugin": "^2.12.1",
+    "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.13",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
+    "eslint": "^9.16.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
   },
   "dependencies": {
     "express": "^4.21.2"
