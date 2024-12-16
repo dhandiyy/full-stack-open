@@ -1,5 +1,5 @@
 import { DiaryEntry } from "../../types/type";
-import toNewDiaryEntry from "../../utils/inputCheck";
+import toNewDiaryEntry from "../../utils/inputSchema";
 
 const data = [
     {
